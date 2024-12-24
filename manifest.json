@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "Dodo - Doodle Board",
-    "version": "1.0",
+    "name": "Dodo SketchBoard",
+    "version": "1.0.0",
     "description": "A floating doodle board for your browser",
     "action": {
         "default_popup": "scripts/index.html",

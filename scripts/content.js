@@ -53,7 +53,7 @@ function createFloatingWindow() {
     editableArea.contentEditable = 'true';
     editableArea.style.cssText = `
     width: 100%;
-    height: 380px;
+    height: auto;
     border: none;
     outline: none;
     background: transparent;
@@ -142,6 +142,7 @@ function createFloatingWindow() {
                 preview.style.maxWidth = '100%';
                 preview.style.maxHeight = '200px';
                 preview.style.objectFit = 'contain';
+                preview.mixBlendMode = 'normal';
                 preview.classList.add('preview-image');
                 preview.src = reader.result;
                 dropArea.appendChild(preview);
