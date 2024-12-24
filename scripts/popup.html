@@ -12,6 +12,7 @@
             padding: 0;
             background-color: #fffff8;
         }
+
         h1 {
             font-family: 'Cabin Sketch', cursive;
             font-size: 3em;
@@ -19,22 +20,30 @@
             margin-top: 20vh;
             cursor: pointer;
         }
+
         span {
             transition: all 0.2s ease-in-out;
         }
+
         span:nth-child(even):hover {
             display: inline-block;
             transform: rotate(10deg);
         }
+
         span:nth-child(odd):hover {
             display: inline-block;
             transform: rotate(-10deg);
         }
-        #open {
-            position: fixed;
-            bottom: 150px;
-            left: 50%;
-            transform: translateX(-50%);
+        
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        button {
             padding: 10px 20px;
             background-color: #FF7676;
             color: white;
@@ -42,10 +51,12 @@
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
+            width: 150px;
         }
-        #open:hover {
+
+        button:hover {
             background-color: #FF5C5C;
-            transform: rotate(3deg) translateX(-50%);
+            transform: rotate(3deg);
         }
     </style>
 </head>
@@ -53,7 +64,10 @@
     <h1>
         <span>D</span><span>o</span><span>d</span><span>o</span> <span>B</span><span>o</span><span>a</span><span>r</span><span>d</span>
     </h1>
-    <button id="open">+ Create Sketch</button>
+    <div class="button-container">
+        <button id="open">+ Create Sketch</button>
+        <button id="close">Close All</button>
+    </div>
     <script src="./index.js"></script>
 </body>
 </html>

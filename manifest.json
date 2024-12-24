@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "description": "A floating doodle board for your browser",
     "action": {
-        "default_popup": "scripts/index.html",
+        "default_popup": "scripts/popup.html",
         "default_icon": "images/icon-128.png"
     },
     "icons": {

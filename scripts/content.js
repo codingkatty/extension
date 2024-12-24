@@ -53,18 +53,29 @@ function createFloatingWindow() {
     editableArea.contentEditable = 'true';
     editableArea.style.cssText = `
     width: 100%;
-    height: auto;
+    height: 375px;
     border: none;
     outline: none;
     background: transparent;
     font-size: 16px;
-    mix-blend-mode: difference;
     font-family: inherit;
     resize: none;
     border: 1px dashed #ccc;
     padding: 16px;
+    overflow: auto;
   `;
     content.appendChild(editableArea);
+
+    editableArea.addEventListener('input', () => {
+        editableArea.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== '') {
+                const span = document.createElement('span');
+                span.style.mixBlendMode = 'difference';
+                span.textContent = node.nodeValue;
+                node.replaceWith(span);
+            }
+        });
+    });
 
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -142,8 +153,7 @@ function createFloatingWindow() {
                 preview.style.maxWidth = '100%';
                 preview.style.maxHeight = '200px';
                 preview.style.objectFit = 'contain';
-                preview.mixBlendMode = 'normal';
-                preview.classList.add('preview-image');
+                preview.style.mixBlendMode = 'hard-light !important';
                 preview.src = reader.result;
                 dropArea.appendChild(preview);
             };
@@ -153,6 +163,7 @@ function createFloatingWindow() {
     dropArea.addEventListener('dragover', () => {
         dropArea.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
     });
+
     dropArea.addEventListener('dragleave', () => {
         dropArea.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
     });
@@ -160,12 +171,18 @@ function createFloatingWindow() {
     return floatingWindow;
 }
 
+
 if (body) {
     chrome.runtime.onMessage.addListener((request) => {
         if (request.action === 'createFloatingWindow') {
             let doodle = document.querySelector('.floating-window');
             doodle = createFloatingWindow();
             body.appendChild(doodle);
+        } else if (request.action === 'closeFloatingWindow') {
+            let doodles = document.querySelectorAll('.floating-window');
+            doodles.forEach(doodle => {
+                doodle.remove();
+            });
         }
     });
 }
