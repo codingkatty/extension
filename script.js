@@ -1,10 +1,5 @@
 const body = document.querySelector("body");
 
-const link = document.createElement('link');
-link.href = 'https://fonts.googleapis.com/css2?family=Pangolin&display=swap';
-link.rel = 'stylesheet';
-document.head.appendChild(link);
-
 function createFloatingWindow() {
     const floatingWindow = document.createElement("div");
     floatingWindow.className = 'floating-window';
@@ -38,8 +33,8 @@ function createFloatingWindow() {
     align-items: center;
   `;
     header.innerHTML = `
-    <span style="cursor:pointer;">Dodo Sketch ☪</span>
-    <button style="cursor:pointer;border:none;background:none;font-size:20px;color:#FFFDD4;padding:0;margin:0;">×</button>
+    <span style="cursor:url('pointer.svg') 35 35, auto;">Dodo Sketch ☪</span>
+    <button style="cursor:url('pointer.svg') 35 35, auto;border:none;background:none;font-size:20px;color:#FFFDD4;padding:0;margin:0;">×</button>
   `;
 
     const content = document.createElement("div");
@@ -172,15 +167,7 @@ function createFloatingWindow() {
 }
 
 
-if (body) {
-    chrome.runtime.onMessage.addListener((request) => {
-        if (request.action === 'createFloatingWindow') {
-            body.appendChild(createFloatingWindow());
-        } else if (request.action === 'closeFloatingWindow') {
-            let doodles = document.querySelectorAll('.floating-window');
-            doodles.forEach(doodle => {
-                doodle.remove();
-            });
-        }
-    });
-}
+const mockSpawn = document.getElementById('mock-spawn');
+mockSpawn.addEventListener('click', () => {
+    body.appendChild(createFloatingWindow());
+});

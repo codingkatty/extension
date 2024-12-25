@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Dodo SketchBoard",
     "version": "1.0.0",
-    "description": "A floating doodle board for your browser",
+    "description": "References . Notes . Easy",
     "action": {
         "default_popup": "scripts/popup.html",
         "default_icon": "images/icon-128.png"
