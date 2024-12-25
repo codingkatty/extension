@@ -20,4 +20,4 @@ To use it, you can clone this repo <br>
 
 Make sure you're using Chrome. Then, go to [chrome://extensions](chrome://extensions/). Toggle 'Developer mode', and you should see a 'Load unpacked' button.
 
-Click on it and select the cloned repo.
+Click on it and select the cloned repo. The extension should show up. Reload any tab that you want to use the extension on before trying.
