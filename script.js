@@ -210,29 +210,10 @@ function createFloatingWindow() {
         dropArea.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
     });
 
-    editableArea.addEventListener('input', () => {
-        chrome.storage.sync.set({
-            'content': editableArea.innerHTML,
-            'color': editableArea.style.color
-        });
-    });
-
-    chrome.storage.sync.get(['content', 'color'], (result) => {
-        if (result.content) {
-            editableArea.innerHTML = result.content;
-        }
-        if (result.color) {
-            editableArea.style.color = result.color;
-            colorToggle.checked = result.color === '#FFFDD4';
-            slider.style.transform = colorToggle.checked ? 'translateX(13px)' : 'translateX(0)';
-        }
-    });
-
     colorToggle.addEventListener('change', function() {
         const color = this.checked ? '#FFFDD4' : '#333';
         editableArea.style.color = color;
         slider.style.transform = this.checked ? 'translateX(13px)' : 'translateX(0)';
-        chrome.storage.sync.set({ 'color': color });
     });
 
     return floatingWindow;
