@@ -18,7 +18,7 @@ Drag and drop images/gif to the window to reference
 Easily resize the window to fit all sizes
 
 - Sync <br>
-The window will stay same for all pages
+The window will be stored and the content can be picked up from anywhere
 
 ## How to Install
 To use it, you can clone this repo <br>
