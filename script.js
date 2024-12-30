@@ -33,9 +33,17 @@ function createFloatingWindow() {
     align-items: center;
   `;
     header.innerHTML = `
-    <span style="cursor:url('pointer.svg') 35 35, auto;">Dodo Sketch ☪</span>
-    <button style="cursor:url('pointer.svg') 35 35, auto;border:none;background:none;font-size:20px;color:#FFFDD4;padding:0;margin:0;">×</button>
-  `;
+        <span style="cursor:move;">Dodo Sketch</span>
+        <div style="display:flex;gap:10px;align-items:center;">
+            <label class="switch" style="position:relative;display:inline-block;width:30px;height:17px;">
+                <input type="checkbox" style="opacity:0;width:0;height:0;">
+                <span class="slider" style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#FFFDD4;border-radius:17px;transition:.4s;">
+                    <span style="position:absolute;content:'';height:13px;width:13px;left:2px;bottom:2px;background-color:#FF7676;border-radius:50%;transition:.4s;"></span>
+                </span>
+            </label>
+            <button style="cursor:pointer;border:none;background:none;font-size:20px;color:#FFFDD4;padding:0;margin:0;">×</button>
+        </div>
+    `;
 
     const content = document.createElement("div");
     content.style.cssText = `
@@ -76,12 +84,51 @@ function createFloatingWindow() {
     floatingWindow.appendChild(content);
     floatingWindow.appendChild(fileInput);
 
-    const headerSpan = header.querySelector('span');
-    headerSpan.addEventListener('click', function() {
-        const colorChange = floatingWindow.querySelector('#interface');
-        const currentColor = window.getComputedStyle(colorChange).color;
-        colorChange.style.color = (currentColor === 'rgb(51, 51, 51)') ? '#FFFDD4' : '#333';
+    const resizeHandle = document.createElement('div');
+    resizeHandle.style.cssText = `
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 15px;
+        height: 15px;
+        cursor: se-resize;
+        background: #FF7676;
+        border-radius: 0 0 20px 0;
+    `;
+    floatingWindow.appendChild(resizeHandle);
+
+    const colorToggle = header.querySelector('input[type="checkbox"]');
+    const slider = header.querySelector('.slider span');
+    
+    colorToggle.addEventListener('change', function() {
+        const editableArea = floatingWindow.querySelector('#interface');
+        editableArea.style.color = this.checked ? '#FFFDD4' : '#333';
+        slider.style.transform = this.checked ? 'translateX(13px)' : 'translateX(0)';
     });
+
+    let isResizing = false;
+    resizeHandle.addEventListener('mousedown', initResize);
+
+    function initResize(e) {
+        isResizing = true;
+        document.addEventListener('mousemove', resize);
+        document.addEventListener('mouseup', stopResize);
+    }
+
+    function resize(e) {
+        if (!isResizing) return;
+        const width = e.clientX - floatingWindow.offsetLeft;
+        const height = e.clientY - floatingWindow.offsetTop;
+        floatingWindow.style.width = width + 'px';
+        floatingWindow.style.height = height + 'px';
+        editableArea.style.height = (height - 75) + 'px';
+    }
+
+    function stopResize() {
+        isResizing = false;
+        document.removeEventListener('mousemove', resize);
+        document.removeEventListener('mouseup', stopResize);
+    }
 
     let isDragging = false;
     let currentX;
@@ -161,6 +208,31 @@ function createFloatingWindow() {
 
     dropArea.addEventListener('dragleave', () => {
         dropArea.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+    });
+
+    editableArea.addEventListener('input', () => {
+        chrome.storage.sync.set({
+            'content': editableArea.innerHTML,
+            'color': editableArea.style.color
+        });
+    });
+
+    chrome.storage.sync.get(['content', 'color'], (result) => {
+        if (result.content) {
+            editableArea.innerHTML = result.content;
+        }
+        if (result.color) {
+            editableArea.style.color = result.color;
+            colorToggle.checked = result.color === '#FFFDD4';
+            slider.style.transform = colorToggle.checked ? 'translateX(13px)' : 'translateX(0)';
+        }
+    });
+
+    colorToggle.addEventListener('change', function() {
+        const color = this.checked ? '#FFFDD4' : '#333';
+        editableArea.style.color = color;
+        slider.style.transform = this.checked ? 'translateX(13px)' : 'translateX(0)';
+        chrome.storage.sync.set({ 'color': color });
     });
 
     return floatingWindow;

@@ -9,10 +9,16 @@ I made this cool thing because sometimes, I just want to quickly jot down someth
 The window can be moved anywhere of your liking
 
 - Colors <br>
-Click the header to change color (darkmode/lightmode)
+Click the toggle to change color (darkmode/lightmode)
 
 - Images <br>
 Drag and drop images/gif to the window to reference
+
+- Resize <br>
+Easily resize the window to fit all sizes
+
+- Sync <br>
+The window will stay same for all pages
 
 ## How to Install
 To use it, you can clone this repo <br>
